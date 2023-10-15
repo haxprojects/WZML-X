@@ -176,9 +176,9 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
         tag = sender_chat.title
 
     if message.from_user.username:
-        tag = f"@{message.from_user.username}"
+        tag = f"@{message.from_user.username} - #id{message.from_user.id}"
     else:
-        tag = message.from_user.first_name
+        tag = message.from_user.mention_html(message.from_user.first_name)
         
     decrypter = None
     if not link and (reply_to := message.reply_to_message):
