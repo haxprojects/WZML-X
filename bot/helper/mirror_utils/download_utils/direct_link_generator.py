@@ -160,7 +160,7 @@ def direct_link_generator(link):
         return easyupload(link)
     elif 'streamvid.net' in domain:
         return streamvid(link)
-    elif any(x in domain for x in ['dood.watch', 'doodstream.com', 'dood.to', 'dood.so', 'dood.cx', 'dood.la', 'dood.ws', 'dood.sh', 'doodstream.co', 'dood.pm', 'dood.wf', 'dood.re', 'dood.video', 'dooood.com', 'dood.yt', 'doods.yt', 'dood.stream', 'doods.pro']):
+    elif any(x in domain for x in ['dood.watch', 'doodstream.com', 'dood.to', 'dood.so', 'dood.cx', 'dood.la', 'dood.ws', 'dood.sh', 'doodstream.co', 'dood.pm', 'dood.wf', 'dood.re', 'dood.video', 'dooood.com', 'dood.yt', 'doods.yt', 'dood.stream', 'doods.pro', 'ds2play.com']):
         return doods(link)
     elif any(x in domain for x in ['streamtape.com', 'streamtape.co', 'streamtape.cc', 'streamtape.to', 'streamtape.net', 'streamta.pe', 'streamtape.xyz']):
         return streamtape(link)
@@ -1136,26 +1136,24 @@ def mediafireFolder(url):
 
 
 def doods(url):
-    if "/e/" in url:
-        url = url.replace("/e/", "/d/")
-    parsed_url = urlparse(url)
-    with create_scraper() as session:
-        try:
-            html = HTML(session.get(url).text)
-        except Exception as e:
-            raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__} While fetching token link') from e
-        if not (link := html.xpath("//div[@class='download-content']//a/@href")):
-            raise DirectDownloadLinkException('ERROR: Token Link not found or maybe not allow to download! open in browser.')
-        link = f'{parsed_url.scheme}://{parsed_url.hostname}{link[0]}'
-        sleep(2)
-        try:
-            _res = session.get(link)
-        except Exception as e:
-            raise DirectDownloadLinkException(
-                f'ERROR: {e.__class__.__name__} While fetching download link') from e
-    if not (link := search(r"window\.open\('(\S+)'", _res.text)):
-        raise DirectDownloadLinkException("ERROR: Download link not found try again")
-    return (link.group(1), f'Referer: {parsed_url.scheme}://{parsed_url.hostname}/')
+    cget = create_scraper().request
+    try:
+        req = cget('GET', f'https://api.pake.tk/dood?url={url}')
+        LOGGER.info(req.json())
+        if req.status_code == 200:
+            try:
+                jresp = req.json()
+                success = jresp.get("success")
+                data = jresp.get("data")
+                if data and success:
+                    title = data.get("title")
+                    referer = data.get("referer")
+                    link = data.get("direct_link")
+                    return (link, f'Referer: {referer}', title)
+            except Exception as e:
+                return DirectDownloadLinkException(f"EROR: {e}")
+    except Exception as e:
+        return DirectDownloadLinkException(f"EROR: {e}")
 
 def easyupload(url):
     if "::" in url:

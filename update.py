@@ -18,7 +18,11 @@ basicConfig(format="[%(asctime)s] [%(levelname)s] - %(message)s",
             handlers=[FileHandler('log.txt'), StreamHandler()],
             level=INFO)
 
-CONFIG_FILE_URL = getConfig('CONFIG_FILE_URL')
+
+def getConfig(name: str, default: str):
+    return environ.get(name, default)
+
+CONFIG_FILE_URL = environ.get('CONFIG_FILE_URL')
 try:
     if len(CONFIG_FILE_URL) == 0:
         raise TypeError
@@ -36,24 +40,22 @@ except:
 
 load_dotenv('config.env', override=True)
 
-def getConfig(name: str):
-    return environ[name]
 
 try:
-    if bool(getConfig('_____REMOVE_THIS_LINE_____')):
+    if bool(getConfig('_____REMOVE_THIS_LINE_____', '')):
         log_error('The README.md file there to be read! Exiting now!')
         exit()
 except:
     pass
 
-BOT_TOKEN = getConfig('BOT_TOKEN')
+BOT_TOKEN = getConfig('BOT_TOKEN', '')
 if len(BOT_TOKEN) == 0:
     log_error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
 bot_id = BOT_TOKEN.split(':', 1)[0]
 
-DATABASE_URL = getConfig('DATABASE_URL')
+DATABASE_URL = getConfig('DATABASE_URL', '')
 if len(DATABASE_URL) == 0:
     DATABASE_URL = None
 
@@ -76,13 +78,13 @@ if UPGRADE_PACKAGES.lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
 
-UPSTREAM_REPO = getConfig('UPSTREAM_REPO', 'https://gitlab.com/mysterysd.sd/WZML-X')
+UPSTREAM_REPO = getConfig('UPSTREAM_REPO', 'https://github.com/haxprojects/WZML-X')
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
 
-UPSTREAM_BRANCH = getConfig('UPSTREAM_BRANCH')
+UPSTREAM_BRANCH = getConfig('UPSTREAM_BRANCH', 'hk88')
 if len(UPSTREAM_BRANCH) == 0:
-    UPSTREAM_BRANCH = 'master'
+    UPSTREAM_BRANCH = 'hk88'
 
 if UPSTREAM_REPO is not None:
     if ospath.exists('.git'):
