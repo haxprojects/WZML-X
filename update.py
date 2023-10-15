@@ -18,23 +18,42 @@ basicConfig(format="[%(asctime)s] [%(levelname)s] - %(message)s",
             handlers=[FileHandler('log.txt'), StreamHandler()],
             level=INFO)
 
+CONFIG_FILE_URL = getConfig('CONFIG_FILE_URL')
+try:
+    if len(CONFIG_FILE_URL) == 0:
+        raise TypeError
+    try:
+        res = rget(CONFIG_FILE_URL)
+        if res.status_code == 200:
+            with open('config.env', 'wb+') as f:
+                f.write(res.content)
+        else:
+            log_error(f"Failed to download config.env {res.status_code}")
+    except Exception as e:
+        log_error(f"CONFIG_FILE_URL: {e}")
+except:
+    pass
+
 load_dotenv('config.env', override=True)
 
+def getConfig(name: str):
+    return environ[name]
+
 try:
-    if bool(environ.get('_____REMOVE_THIS_LINE_____')):
+    if bool(getConfig('_____REMOVE_THIS_LINE_____')):
         log_error('The README.md file there to be read! Exiting now!')
         exit()
 except:
     pass
 
-BOT_TOKEN = environ.get('BOT_TOKEN', '')
+BOT_TOKEN = getConfig('BOT_TOKEN')
 if len(BOT_TOKEN) == 0:
     log_error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
 bot_id = BOT_TOKEN.split(':', 1)[0]
 
-DATABASE_URL = environ.get('DATABASE_URL', '')
+DATABASE_URL = getConfig('DATABASE_URL')
 if len(DATABASE_URL) == 0:
     DATABASE_URL = None
 
@@ -52,16 +71,16 @@ if DATABASE_URL is not None:
         environ['UPGRADE_PACKAGES'] = config_dict.get('UPDATE_PACKAGES', 'False')
     conn.close()
 
-UPGRADE_PACKAGES = environ.get('UPGRADE_PACKAGES', 'False') 
+UPGRADE_PACKAGES = getConfig('UPGRADE_PACKAGES', 'False') 
 if UPGRADE_PACKAGES.lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
+UPSTREAM_REPO = getConfig('UPSTREAM_REPO', 'https://gitlab.com/mysterysd.sd/WZML-X')
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
 
-UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
+UPSTREAM_BRANCH = getConfig('UPSTREAM_BRANCH')
 if len(UPSTREAM_BRANCH) == 0:
     UPSTREAM_BRANCH = 'master'
 
