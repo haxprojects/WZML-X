@@ -1136,24 +1136,25 @@ def mediafireFolder(url):
 
 
 def doods(url):
-    cget = create_scraper().request
     try:
-        req = cget('GET', f'https://api.pake.tk/dood?url={url}')
-        LOGGER.info(req.json())
-        if req.status_code == 200:
-            try:
-                jresp = req.json()
-                success = jresp.get("success")
-                data = jresp.get("data")
-                if data and success:
-                    title = data.get("title")
-                    referer = data.get("referer")
-                    link = data.get("direct_link")
-                    return (link, f'Referer: {referer}', title)
-            except Exception as e:
-                return DirectDownloadLinkException(f"EROR: {e}")
+        response = requests.get(f'https://api.pake.tk/dood?url={url}')
+        data = response.json()
+        
+        if response.status_code == 200:
+            success = data.get("success")
+            if success:
+                title = data["data"]["title"]
+                referer = data["data"]["referer"]
+                link = data["data"]["direct_link"]
+                return (link, f'Referer: {referer}', title)
+            else:
+                message = data.get("message")
+                if message:
+                    return DirectDownloadLinkException(f"Error: {message}")
+        else:
+            return DirectDownloadLinkException(f"Error: HTTP Status Code {response.status_code}")
     except Exception as e:
-        return DirectDownloadLinkException(f"EROR: {e}")
+        return DirectDownloadLinkException(f"Error: {e}")
 
 def easyupload(url):
     if "::" in url:
