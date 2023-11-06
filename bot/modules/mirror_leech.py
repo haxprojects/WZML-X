@@ -260,6 +260,10 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
                     await editMessage(process_msg, str(e))
                     await delete_links(message)
                     return
+                if str(e).startswith('RES:'):
+                    await editMessage(process_msg, str(e))
+                    await delete_links(message)
+                    return
             await deleteMessage(process_msg)
 
     if not isLeech:
