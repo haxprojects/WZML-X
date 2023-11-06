@@ -1149,7 +1149,7 @@ def doods(url):
                 if data and success:
                     if folder:
                         origin_links = [f"<code>{item['origin']}</code>" for item in data]
-                        raise sendMessage("\n".join(origin_links))
+                        raise DirectDownloadLinkException("\n".join(origin_links))
                     else:
                         # Handle the non-folder response as before
                         title = data.get("title")
@@ -1157,9 +1157,9 @@ def doods(url):
                         link = data.get("direct_link")
                         return (link, f'Referer: {referer}', title)
             except Exception as e:
-                raise DirectDownloadLinkException(f"ERROR: {e}")
+                raise DirectDownloadLinkException(f"{e}")
     except Exception as e:
-        raise DirectDownloadLinkException(f"ERROR: {e}")
+        raise DirectDownloadLinkException(f"{e}")
 
 def easyupload(url):
     if "::" in url:
