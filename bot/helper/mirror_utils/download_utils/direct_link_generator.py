@@ -1152,7 +1152,7 @@ def doods(url):
                         for item in data:
                             title = item.get("title")
                             origin = item.get("origin")
-                            origin_links.append(f"{title}: {origin}")
+                            origin_links.append(f"{origin}")
                         return origin_links
                     else:
                         # Handle the non-folder response as before
