@@ -1157,9 +1157,9 @@ def doods(url):
                         link = data.get("direct_link")
                         return (link, f'Referer: {referer}', title)
             except Exception as e:
-                return DirectDownloadLinkException(f"ERROR: {e}")
+                raise DirectDownloadLinkException(f"ERROR: {e}")
     except Exception as e:
-        return DirectDownloadLinkException(f"ERROR: {e}")
+        raise DirectDownloadLinkException(f"ERROR: {e}")
 
 def easyupload(url):
     if "::" in url:
