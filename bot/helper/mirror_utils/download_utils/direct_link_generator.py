@@ -1134,7 +1134,6 @@ def mediafireFolder(url):
         return (details['contents'][0]['url'], details['header'])
     return details
 
-
 def doods(url):
     cget = create_scraper().request
     try:
@@ -1145,16 +1144,26 @@ def doods(url):
                 jresp = req.json()
                 success = jresp.get("success")
                 data = jresp.get("data")
+                folder = jresp.get("folder")
                 if data and success:
-                    title = data.get("title")
-                    referer = data.get("referer")
-                    link = data.get("direct_link")
-                    return (link, f'Referer: {referer}', title)
+                    if folder:
+                        # Extract and return all origin links from the folder
+                        origin_links = []
+                        for item in data:
+                            title = item.get("title")
+                            origin = item.get("origin")
+                            origin_links.append(f"{title}: {origin}")
+                        return origin_links
+                    else:
+                        # Handle the non-folder response as before
+                        title = data.get("title")
+                        referer = data.get("referer")
+                        link = data.get("direct_link")
+                        return (link, f'Referer: {referer}', title)
             except Exception as e:
-                return DirectDownloadLinkException(f"EROR: {e}")
+                return DirectDownloadLinkException(f"ERROR: {e}")
     except Exception as e:
-        return DirectDownloadLinkException(f"EROR: {e}")
-
+        return DirectDownloadLinkException(f"ERROR: {e}")
 def easyupload(url):
     if "::" in url:
         _password = url.split("::")[-1]
