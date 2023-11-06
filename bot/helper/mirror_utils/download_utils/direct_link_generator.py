@@ -1147,13 +1147,8 @@ def doods(url):
                 folder = jresp.get("folder")
                 if data and success:
                     if folder:
-                        # Extract and return all origin links from the folder
-                        origin_links = []
-                        for item in data:
-                            title = item.get("title")
-                            origin = item.get("origin")
-                            origin_links.append(f"{origin}")
-                        return origin_links
+                        origin_links = [f"<code>{item['origin']}</code>" for item in data]
+                        return DirectDownloadLinkException("\n".join(origin_links))
                     else:
                         # Handle the non-folder response as before
                         title = data.get("title")
@@ -1164,6 +1159,7 @@ def doods(url):
                 return DirectDownloadLinkException(f"ERROR: {e}")
     except Exception as e:
         return DirectDownloadLinkException(f"ERROR: {e}")
+
 def easyupload(url):
     if "::" in url:
         _password = url.split("::")[-1]
