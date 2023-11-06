@@ -1149,7 +1149,7 @@ def doods(url):
                 if data and success:
                     if folder:
                         origin_links = [f"<code>{item['origin']}</code>" for item in data]
-                        return sendMessage("\n".join(origin_links))
+                        raise DirectDownloadLinkException("\n".join(origin_links))
                     else:
                         # Handle the non-folder response as before
                         title = data.get("title")
