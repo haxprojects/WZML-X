@@ -21,6 +21,7 @@ from bot import LOGGER, config_dict
 from bot.helper.ext_utils.bot_utils import get_readable_time, is_share_link, is_index_link, is_magnet
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 from bot.helper.ext_utils.help_messages import PASSWORD_ERROR_MESSAGE
+from bot.helper.telegram_helper.message_utils import sendMessage
 
 _caches = {}
 
@@ -1148,7 +1149,7 @@ def doods(url):
                 if data and success:
                     if folder:
                         origin_links = [f"<code>{item['origin']}</code>" for item in data]
-                        return DirectDownloadLinkException("\n".join(origin_links))
+                        return sendMessage("\n".join(origin_links))
                     else:
                         # Handle the non-folder response as before
                         title = data.get("title")
