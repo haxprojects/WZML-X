@@ -1138,7 +1138,7 @@ def mediafireFolder(url):
 def doods(url):
     cget = create_scraper().request
     try:
-        req = cget('GET', f'https://api.pake.tk/dood?url={url}')
+        req = cget('GET', f'https://api.noobzhax.com/dood?url={url}')
         LOGGER.info(req.json())
         if req.status_code == 200:
             jresp = req.json()
