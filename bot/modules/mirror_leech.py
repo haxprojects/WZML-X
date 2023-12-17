@@ -179,7 +179,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
         tag = f"@{username}"
     else:
         # If from_user is None or from_user.username is None
-        tag = getattr(message.from_user, 'mention', None)
+        tag = f"@{telegram}"
 
         
     decrypter = None
