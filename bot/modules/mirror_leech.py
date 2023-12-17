@@ -178,7 +178,8 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     if message.from_user is not None and (username := message.from_user.username) is not None:
         tag = f"@{username}"
     else:
-        tag = message.from_user.mention
+        # If from_user is None or from_user.username is None
+        tag = getattr(message.from_user, 'mention', None)
 
         
     decrypter = None
