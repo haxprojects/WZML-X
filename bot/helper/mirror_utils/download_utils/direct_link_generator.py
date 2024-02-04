@@ -161,7 +161,7 @@ def direct_link_generator(link):
         return easyupload(link)
     elif 'streamvid.net' in domain:
         return streamvid(link)
-    elif any(x in domain for x in ['dood.watch', 'doodstream.com', 'dood.to', 'dood.so', 'dood.cx', 'dood.la', 'dood.ws', 'dood.sh', 'doodstream.co', 'dood.pm', 'dood.wf', 'dood.re', 'dood.video', 'dooood.com', 'dood.yt', 'doods.yt', 'dood.stream', 'doods.pro', 'ds2play.com', 'dood.boo', 'dood.zip', 'poop.media', 'doods.boo', 'doodx.pro', 'tem.pics', 'poop.cx', 'ds2video', 'd0o0d.com', 'poops.pink', 'doodf.com', 'poop.kim', 'poop.vin','do0od.com', 'do0d.com', 'doood.cam']):
+    elif any(x in domain for x in ['dood.watch', 'doodstream.com', 'dood.to', 'dood.so', 'dood.cx', 'dood.la', 'dood.ws', 'dood.sh', 'doodstream.co', 'dood.pm', 'dood.wf', 'dood.re', 'dood.video', 'dooood.com', 'dood.yt', 'doods.yt', 'dood.stream', 'doods.pro', 'ds2play.com', 'dood.boo', 'dood.zip', 'poop.media', 'doods.boo', 'doodx.pro', 'tem.pics', 'poop.cx', 'ds2video', 'd0o0d.com', 'poops.pink', 'doodf.com', 'poop.kim', 'poop.vin','do0od.com', 'do0d.com', 'doood.cam', 'd0000d.com']):
         return doods(link)
     elif any(x in domain for x in ['streamtape.com', 'streamtape.co', 'streamtape.cc', 'streamtape.to', 'streamtape.net', 'streamta.pe', 'streamtape.xyz', 'streamnoads.com', 'tapenoads.com']):
         return streamtape(link)
