@@ -1138,7 +1138,7 @@ def mediafireFolder(url):
 def doods(url):
     with create_scraper() as session:
         try:
-            req = session.get(f"https://api.noobzhax.com/dood?url={url}")
+            req = session.get(f"https://f-api.pakai.eu.org/doodstream?link={url}")
             req.raise_for_status()  # Raises HTTPError for bad responses
 
             jresp = req.json()
